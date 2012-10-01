@@ -5,14 +5,24 @@ class NagiosWebbedLog < Sinatra::Base
 
   # This can display a nice status message.
   #
+  get "/:year/:monts/:day.csv" do
+
+  end
+
+  get "/:year/:monts/:day" do
+
+  end
+
+  get "/:year/:monts" do
+  
+  end
+
+  get "/:year" do
+
+  end
+
   get "/" do
     "Your skinny daemon is up and running."
   end
-
-  # This POST allows your other apps to control the service.
-  #
-  post "/do-something/:great" do
-    # something great could happen here
-  end  
 
 end
