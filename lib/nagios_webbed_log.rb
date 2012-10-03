@@ -22,7 +22,13 @@ class NagiosWebbedLog < Sinatra::Base
   end
 
   get "/" do
-    "Your skinny daemon is up and running."
+   load_arr
+   haml :index
   end
 
+ def load_arr
+  @years = []
+  @months = []
+  @days = []
+ end
 end

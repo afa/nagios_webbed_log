@@ -1,0 +1,28 @@
+!!!
+%head
+ %title nagios
+%body
+ %form{:action => "/", :method => :get}
+  %label{:for => :year} Year
+  %select#year{:name => "year"}
+   %option{:value => '0'} ---
+   - @years.each do |year|
+    %option{:value => year, :selected => (year == @year)}= year
+
+  %label{:for => :month} Month
+  %select#year{:name => "month"}
+   %option{:value => '0'} ---
+   - @months.each do |month|
+    %option{:value => month, :selected => (month == @month)}= month
+
+  %label{:for => :day} Day
+  %select#day{:name => "day"}
+   %option{:value => '0'} ---
+   - @days.each do |day|
+    %option{:value => day, :selected => (day == @day)}= day
+  %button{:name => "submit"} find
+
+
+  
+
+#{@year} #{@month} #{@day}

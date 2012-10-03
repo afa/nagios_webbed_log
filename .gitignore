@@ -13,6 +13,8 @@ doc
 .bundle
 Gemfile.lock
 
+log/
+
 # jeweler generated
 pkg
 
