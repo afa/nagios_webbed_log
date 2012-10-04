@@ -22,7 +22,25 @@
     %option{:value => day, :selected => (day == @day)}= day
   %button{:name => "submit"} find
 
-
-  
+ %table
+  %tr
+   %th Date
+   %th Start-time
+   %th Stop-time
+   %th Service
+   %th Reason
+   %th Comments
+  - @events.each do |evt|
+   - lvl = evt.map{|it| levs.index(it[:level]) || 3 }.max
+   - ll = evt.detect{|it| not levs.include?(it[:level]) }
+   - len = evt.last[:stamp] - evt.first[:stamp]
+   -# puts "#{its.first[:host]}\t#{its.first[:service]}\t#{its.first[:stamp].to_i}\t#{its.first[:stamp].strftime("%Y-%m-%d %H:%M:%S")}\t#{levs[lvl]}\t#{len}\t#{its.first[:message]}"
+   %tr
+    %td= evt.first[:stamp].strftime("%Y-%m-%d")
+    %td= evt.first[:stamp].strftime("%H:%M:%S")
+    %td= evt.last[:stamp].strftime("%H:%M:%S")
+    %td #{evt.first[:host]}-#{evt.first[:service]}
+    %td #{evt.first[:message]}
+    %td
 
 #{@year} #{@month} #{@day}
