@@ -1,3 +1,4 @@
+- levs = %w(OK WARNING CRITICAL UNKNOWN)
 !!!
 %head
  %title nagios
@@ -31,9 +32,9 @@
    %th Reason
    %th Comments
   - @events.each do |evt|
-   - lvl = evt.map{|it| levs.index(it[:level]) || 3 }.max
-   - ll = evt.detect{|it| not levs.include?(it[:level]) }
-   - len = evt.last[:stamp] - evt.first[:stamp]
+   -# lvl = evt.map{|it| levs.index(it[:level]) || 3 }.max
+   -# ll = evt.detect{|it| not levs.include?(it[:level]) }
+   -# len = evt.last[:stamp] - evt.first[:stamp]
    -# puts "#{its.first[:host]}\t#{its.first[:service]}\t#{its.first[:stamp].to_i}\t#{its.first[:stamp].strftime("%Y-%m-%d %H:%M:%S")}\t#{levs[lvl]}\t#{len}\t#{its.first[:message]}"
    %tr
     %td= evt.first[:stamp].strftime("%Y-%m-%d")

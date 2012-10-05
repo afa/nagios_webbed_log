@@ -5,7 +5,7 @@ module NagiosLogger
 
  def load_files(pref, mask)
   data = []
-  Dir[File.join(pref, mask)].each do |fname|
+  Dir[File.expand_path(File.join(pref, mask))].each do |fname|
    data += load_file(fname, data)
   end
   data
@@ -38,6 +38,7 @@ module NagiosLogger
  end
 
  def parse_line(line)
+  p "---parse", line
   data = {}
   line.force_encoding("KOI8-R").encode("UTF-8").scan(/^\[(\d+)\]\s+(.+)$/u) do |m|
    unless m[0]
@@ -47,7 +48,7 @@ module NagiosLogger
    if m[1] !~ /^SERVICE ALERT/
     return nil
    end
-   data.merge(:stamp => Time.at(m[0].to_i))
+   data.merge!(:stamp => Time.at(m[0].to_i))
    m[1].scan(/SERVICE ALERT:\s+(.+?);(.+?);(.+?);(.+?);(.+?);(.+)$/) do |n|
     data[:host] = n[0]
     data[:service] = n[1]

@@ -7,14 +7,13 @@ class NagiosWebbedLog < Sinatra::Base
   # This can display a nice status message.
   #
   get "/:year/:month/:day.csv" do
+  end
+
+  get "/:year/:month/:day" do
    get_params
    load_dates
    @events = load_events
    haml :index
-  end
-
-  get "/:year/:month/:day" do
-
   end
 
   get "/:year/:month" do
@@ -40,6 +39,16 @@ class NagiosWebbedLog < Sinatra::Base
   end
 
  def load_events
+  lines = load_files(ENV["NAGIOS_LOG"],"nagios-#{@month.to_i == 0 ? '*' : @month}-#{@day.to_i == 0 ? '*' : @day}-#{@year.to_i == 0 ? '*' : @year}-*.log")
+  sites = {}
+  lines.compact.map{|l| parse_line(l) }.compact.each do |hsh|
+   place_host(hsh, sites)
+  end
+  p "---sit", sites
+  sort_sites(sites)
+  events = make_events(sites)
+  p "---evt", events
+  events
  end
 
  def get_params
@@ -48,12 +57,12 @@ class NagiosWebbedLog < Sinatra::Base
   else
    @year = "0"
   end
-  if params[:month] && (1..12).map(&:to_s).include?(params[:month])
+  if params[:month] && (1..12).map(&:to_s).map{|s| s.rjust(2, "0") }.include?(params[:month])
    @month = params[:month]
   else
    @month = "0"
   end
-  if params[:day] && (1..31).map(&:to_s).include?(params[:day])
+  if params[:day] && (1..31).map(&:to_s).map{|s| s.rjust(2, "0") }.include?(params[:day])
    @day = params[:day]
   else
    @day = "0"
@@ -61,12 +70,8 @@ class NagiosWebbedLog < Sinatra::Base
  end
 
  def load_dates
-  p "---log location", ENV["NAGIOS_LOG"]
   @names_list = load_file_list(ENV["NAGIOS_LOG"])
-  p "---names", @names_list
-  p "---split", @names_list.map{|n| n.split("-") }
   @years = @names_list.map{|n| n.split("-") }.map{|n| n[3] }.uniq
-  p "---ye", @years
   @days = @names_list.map{|n| n.split("-") }.map{|n| n[2] }.uniq
   @months = @names_list.map{|n| n.split("-") }.map{|n| n[1] }.uniq
  end
