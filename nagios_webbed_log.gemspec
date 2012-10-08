@@ -33,6 +33,7 @@ Gem::Specification.new do |s|
     "lib/nagios_webbed_log/config.ru",
     "lib/tmp_scan.rb",
     "lib/views/index.haml",
+    "nagios_webbed_log.gemspec",
     "spec/nagios_webbed_log_spec.rb",
     "spec/spec_helper.rb"
   ]
