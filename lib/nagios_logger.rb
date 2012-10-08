@@ -6,12 +6,13 @@ module NagiosLogger
  def load_files(pref, mask)
   data = []
   Dir[File.expand_path(File.join(pref, mask))].each do |fname|
-   data += load_file(fname, data)
+   data += load_file(fname)
   end
   data
  end
 
- def load_file(fname, data)
+ def load_file(fname)
+  data = []
   File.open(fname, "r") do |f|
    f.readlines.each do |line|
     data << line
@@ -38,11 +39,10 @@ module NagiosLogger
  end
 
  def parse_line(line)
-  p "---parse", line
   data = {}
   line.force_encoding("KOI8-R").encode("UTF-8").scan(/^\[(\d+)\]\s+(.+)$/u) do |m|
    unless m[0]
-    $stderr << m
+    #$stderr << m
     return nil
    end
    if m[1] !~ /^SERVICE ALERT/

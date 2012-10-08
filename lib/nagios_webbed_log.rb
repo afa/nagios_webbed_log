@@ -17,11 +17,17 @@ class NagiosWebbedLog < Sinatra::Base
   end
 
   get "/:year/:month" do
-  
+   get_params
+   load_dates
+   @events = load_events
+   haml :index
   end
 
   get "/:year" do
-
+   get_params
+   load_dates
+   @events = load_events
+   haml :index
   end
 
   get "/" do
@@ -44,10 +50,8 @@ class NagiosWebbedLog < Sinatra::Base
   lines.compact.map{|l| parse_line(l) }.compact.each do |hsh|
    place_host(hsh, sites)
   end
-  p "---sit", sites
   sort_sites(sites)
   events = make_events(sites)
-  p "---evt", events
   events
  end
 
@@ -74,7 +78,5 @@ class NagiosWebbedLog < Sinatra::Base
   @years = @names_list.map{|n| n.split("-") }.map{|n| n[3] }.uniq
   @days = @names_list.map{|n| n.split("-") }.map{|n| n[2] }.uniq
   @months = @names_list.map{|n| n.split("-") }.map{|n| n[1] }.uniq
- end
- def load_arr
  end
 end
