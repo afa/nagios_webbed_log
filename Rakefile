@@ -17,10 +17,21 @@ Jeweler::Tasks.new do |gem|
   gem.name = "nagios_webbed_log"
   gem.homepage = "http://github.com/afa/nagios_webbed_log"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{simple nagios log publisher}
+  gem.description = %Q{simple nagios log publisher}
   gem.email = "afa.alone@gmail.com"
   gem.authors = ["afa"]
+  gem.executables = ['nagios_webbed_log']
+  gem.add_dependency "sinatra"
+  gem.add_dependency "haml"
+  gem.add_dependency "thin"
+  gem.add_development_dependency "rspec", ">= 2.8.0"
+  gem.add_development_dependency "rack-test"
+  gem.add_development_dependency "rdoc", "~> 3.12"
+  gem.add_development_dependency "bundler", ">= 1.0.0"
+  gem.add_development_dependency "jeweler", "~> 1.8.4"
+  gem.add_development_dependency "simplecov", ">= 0"
+
   # dependencies defined in Gemfile
 end
 Jeweler::RubygemsDotOrgTasks.new
