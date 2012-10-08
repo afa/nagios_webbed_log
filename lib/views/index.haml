@@ -7,40 +7,43 @@
   %label{:for => :year} Year
   %select#year{:name => "year"}
    %option{:value => '0'} ---
-   - @years.each do |year|
+   - @years.sort.each do |year|
     %option{:value => year, :selected => (year == @year)}= year
 
   %label{:for => :month} Month
   %select#year{:name => "month"}
    %option{:value => '0'} ---
-   - @months.each do |month|
+   - @months.sort.each do |month|
     %option{:value => month, :selected => (month == @month)}= month
 
   %label{:for => :day} Day
   %select#day{:name => "day"}
    %option{:value => '0'} ---
-   - @days.each do |day|
+   - @days.sort.each do |day|
     %option{:value => day, :selected => (day == @day)}= day
   %button{:name => "submit"} find
 
- %table
-  %tr
-   %th Date
-   %th Start-time
-   %th Stop-time
-   %th Service
-   %th Reason
-   %th Comments
-  - @events.each do |evt|
-   -# lvl = evt.map{|it| levs.index(it[:level]) || 3 }.max
-   -# ll = evt.detect{|it| not levs.include?(it[:level]) }
-   -# len = evt.last[:stamp] - evt.first[:stamp]
-   -# puts "#{its.first[:host]}\t#{its.first[:service]}\t#{its.first[:stamp].to_i}\t#{its.first[:stamp].strftime("%Y-%m-%d %H:%M:%S")}\t#{levs[lvl]}\t#{len}\t#{its.first[:message]}"
+ - unless @events.empty?
+  %a{:href => "/#{@year == '0' ? 0 : @year}/#{@month == '0' ? 0 : @month}/#{@day == '0' ? 0 : @day}.csv"} Save to CSV
+  %table
    %tr
-    %td= evt.first[:stamp].strftime("%Y-%m-%d")
-    %td= evt.first[:stamp].strftime("%H:%M:%S")
-    %td= evt.last[:stamp].strftime("%H:%M:%S")
-    %td #{evt.first[:host]}-#{evt.first[:service]}
-    %td #{evt.first[:message]}
-    %td
+    %th Date
+    %th Start-time
+    %th Lattency
+    %th Service
+    %th{:style => "display:none;"} Reason
+    %th Comments
+   - levs = %w(OK WARNING CRITICAL UNKNOWN)
+   - @events.each do |evt|
+    - lvl = evt.map{|it| levs.index(it[:level]) || 3 }.max
+    - ll = evt.detect{|it| not levs.include?(it[:level]) }
+    -# len = evt.last[:stamp] - evt.first[:stamp]
+    -# puts "#{its.first[:host]}\t#{its.first[:service]}\t#{its.first[:stamp].to_i}\t#{its.first[:stamp].strftime("%Y-%m-%d %H:%M:%S")}\t#{levs[lvl]}\t#{len}\t#{its.first[:message]}"
+    %tr
+     %td= evt.first[:stamp].strftime("%Y-%m-%d")
+     %td= evt.first[:stamp].strftime("%H:%M:%S")
+     %td= evt.last[:stamp] - evt.first[:stamp]
+     %td #{evt.first[:host]}-#{evt.first[:service]}
+     %td{:style => "display:none;"} #{evt.first[:message]}
+     %td
 

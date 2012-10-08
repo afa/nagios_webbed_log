@@ -1,3 +1,4 @@
+#coding: UTF-8
 module NagiosLogger
  def load_file_list(pref)
   Dir[File.join(pref, "*")].map{|n| File.basename(n) }
@@ -39,6 +40,17 @@ module NagiosLogger
  end
 
  def parse_line(line)
+=begin
+CPU on remaccess	 Рабочий сервер
+CPU on ra	 Тестовый сервер
+HTTP	 УРМ
+HTTP-work	 СОД
+HTTP-lesson	 Тестовый СОД
+Соответствие уровней оповещений в логе выводимым в таблице:
+
+CRITICAL	 Ошибка
+WARNING	 Предупреждение
+=end
   data = {}
   line.force_encoding("KOI8-R").encode("UTF-8").scan(/^\[(\d+)\]\s+(.+)$/u) do |m|
    unless m[0]
