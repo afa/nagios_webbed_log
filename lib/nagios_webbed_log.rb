@@ -11,7 +11,9 @@ class NagiosWebbedLog < Sinatra::Base
    get_params
    load_dates
    @events = load_events
-   to_csv(@events)
+   response.headers['content_type'] = "application/csv"
+   attachment("failures-#{@year}-#{@month}-#{@day}.csv")
+   response.write to_csv(@events)
   end
 
   get "/:year/:month/:day" do
