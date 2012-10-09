@@ -31,8 +31,8 @@
     %th Start-time
     %th Lattency
     %th Service
+    %th Level
     %th{:style => "display:none;"} Reason
-    %th Comments
    - levs = %w(OK WARNING CRITICAL UNKNOWN)
    - @events.each do |evt|
     - lvl = evt.map{|it| levs.index(it[:level]) || 3 }.max
@@ -43,7 +43,7 @@
      %td= evt.first[:stamp].strftime("%Y-%m-%d")
      %td= evt.first[:stamp].strftime("%H:%M:%S")
      %td= evt.last[:stamp] - evt.first[:stamp]
-     %td #{evt.first[:host]}-#{evt.first[:service]}
+     %td #{evt.first[:service]}
+     %td= NagiosLogger::LEVEL_LUT[lvl] || "---"
      %td{:style => "display:none;"} #{evt.first[:message]}
-     %td
 

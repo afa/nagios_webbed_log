@@ -1,5 +1,27 @@
 #coding: UTF-8
 module NagiosLogger
+=begin
+CPU on remaccess	 Рабочий сервер
+CPU on ra	 Тестовый сервер
+HTTP	 УРМ
+HTTP-work	 СОД
+HTTP-lesson	 Тестовый СОД
+Соответствие уровней оповещений в логе выводимым в таблице:
+
+CRITICAL	 Ошибка
+WARNING	 Предупреждение
+=end
+ SERVICE_LUT = {
+  "CPU on ra" => "Тестовый сервер",
+  "CPU on remaccess" => "Рабочий сервер",
+  "HTTP" => "УРМ",
+  "HTTP-work" => "СОД",
+  "HTTP-lesson" => "Тестовый СОД"
+ }
+ LEVEL_LUT = {
+  "CRITICAL" => "Ошибка",
+  "WARNING" => "Предупреждение"
+ }
  def load_file_list(pref)
   Dir[File.join(pref, "*")].map{|n| File.basename(n) }
  end
@@ -40,17 +62,6 @@ module NagiosLogger
  end
 
  def parse_line(line)
-=begin
-CPU on remaccess	 Рабочий сервер
-CPU on ra	 Тестовый сервер
-HTTP	 УРМ
-HTTP-work	 СОД
-HTTP-lesson	 Тестовый СОД
-Соответствие уровней оповещений в логе выводимым в таблице:
-
-CRITICAL	 Ошибка
-WARNING	 Предупреждение
-=end
   data = {}
   line.force_encoding("KOI8-R").encode("UTF-8").scan(/^\[(\d+)\]\s+(.+)$/u) do |m|
    unless m[0]
@@ -69,7 +80,9 @@ WARNING	 Предупреждение
     data[:count] = n[4]
     data[:message] = n[5]
    end
+   return nil unless SERVICE_LUT.has_key?(data[:service])
   end
+  data[:service] = SERVICE_LUT[data[:service]]
   data
  end
 
