@@ -1,16 +1,5 @@
 #coding: UTF-8
 module NagiosLogger
-=begin
-CPU on remaccess	 Рабочий сервер
-CPU on ra	 Тестовый сервер
-HTTP	 УРМ
-HTTP-work	 СОД
-HTTP-lesson	 Тестовый СОД
-Соответствие уровней оповещений в логе выводимым в таблице:
-
-CRITICAL	 Ошибка
-WARNING	 Предупреждение
-=end
  SERVICE_LUT = {
   "CPU on ra" => "Тестовый сервер",
   "CPU on remaccess" => "Рабочий сервер",

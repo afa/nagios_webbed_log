@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'sinatra/base'
+require 'csv'
 require File.expand_path(File.join(File.dirname(__FILE__), 'nagios_logger'))
 include NagiosLogger
 class NagiosWebbedLog < Sinatra::Base
@@ -7,6 +8,10 @@ class NagiosWebbedLog < Sinatra::Base
   # This can display a nice status message.
   #
   get "/:year/:month/:day.csv" do
+   get_params
+   load_dates
+   @events = load_events
+   to_csv(@events)
   end
 
   get "/:year/:month/:day" do
@@ -78,5 +83,17 @@ class NagiosWebbedLog < Sinatra::Base
   @years = @names_list.map{|n| n.split("-") }.map{|n| n[3] }.uniq
   @days = @names_list.map{|n| n.split("-") }.map{|n| n[2] }.uniq
   @months = @names_list.map{|n| n.split("-") }.map{|n| n[1] }.uniq
+ end
+ def to_csv(data)
+  levs = %w(OK WARNING CRITICAL UNKNOWN)
+  out = CSV.generate( {:col_sep => ";"}) do |csv|
+   #csv << hdr
+   data.each do |evt|
+    lvl = evt.map{|it| levs.index(it[:level]) || 3 }.max
+    ll = evt.detect{|it| not levs.include?(it[:level]) }
+    csv << [evt.first[:stamp].strftime("%Y-%m-%d"), evt.first[:stamp].strftime("%H:%M:%S"), evt.last[:stamp] - evt.first[:stamp], evt.first[:service], NagiosLogger::LEVEL_LUT[levs[lvl]]]
+   end
+  end
+  out.force_encoding('UTF-8').encode('Windows-1251')
  end
 end
