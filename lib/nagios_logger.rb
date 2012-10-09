@@ -58,7 +58,7 @@ WARNING	 Предупреждение
     end
    end
   end
-  events.sort{|a, b| a[:stamp] <=> b[:stamp] }
+  events.sort{|a, b| a.first[:stamp] <=> b.first[:stamp] }
  end
 
  def parse_line(line)
