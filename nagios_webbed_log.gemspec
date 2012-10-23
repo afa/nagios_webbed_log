@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "nagios_webbed_log"
-  s.version = "0.4.0"
+  s.version = "0.5.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["afa"]
-  s.date = "2012-10-09"
+  s.date = "2012-10-23"
   s.description = "simple nagios log publisher"
   s.email = "afa.alone@gmail.com"
   s.executables = ["nagios_webbed_log"]
