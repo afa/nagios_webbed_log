@@ -93,7 +93,7 @@ class NagiosWebbedLog < Sinatra::Base
    data.each do |evt|
     lvl = evt.map{|it| levs.index(it[:level]) || 3 }.max
     ll = evt.detect{|it| not levs.include?(it[:level]) }
-    csv << [evt.first[:stamp].strftime("%Y-%m-%d"), evt.first[:stamp].strftime("%H:%M:%S"), evt.last[:stamp] - evt.first[:stamp], evt.first[:service], NagiosLogger::LEVEL_LUT[levs[lvl]]]
+    csv << [evt.first[:stamp].strftime("%Y-%m-%d"), evt.first[:stamp].strftime("%H:%M:%S"), (evt.last[:stamp] - evt.first[:stamp]).to_i, evt.first[:service], NagiosLogger::LEVEL_LUT[levs[lvl]]]
    end
   end
   out.force_encoding('UTF-8').encode('Windows-1251')

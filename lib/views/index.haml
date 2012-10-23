@@ -42,7 +42,7 @@
     %tr
      %td= evt.first[:stamp].strftime("%Y-%m-%d")
      %td= evt.first[:stamp].strftime("%H:%M:%S")
-     %td= evt.last[:stamp] - evt.first[:stamp]
+     %td= (evt.last[:stamp] - evt.first[:stamp]).to_i
      %td #{evt.first[:service]}
      %td= NagiosLogger::LEVEL_LUT[levs[lvl]]
      %td{:style => "display:none;"} #{evt.first[:message]}
